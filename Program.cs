@@ -1,0 +1,52 @@
+#region sample_bootstrapping_order_saga_sample
+
+using Marten;
+using Oakton;
+using Oakton.Resources;
+using SagaExample.Sagas;
+using Wolverine;
+using Wolverine.Marten;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Not 100% necessary, but enables some extra command line diagnostics
+builder.Host.ApplyOaktonExtensions();
+
+// Adding Marten
+builder.Services.AddMarten(opts =>
+    {
+        opts.Connection(builder.Configuration.GetConnectionString("Marten") ?? string.Empty);
+        opts.DatabaseSchemaName = "orders";
+    })
+
+    // Adding the Wolverine integration for Marten.
+    .IntegrateWithWolverine();
+
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// Do all necessary database setup on startup
+builder.Services.AddResourceSetupOnStartup();
+
+// The defaults are good enough here
+builder.Host.UseWolverine();
+
+var app = builder.Build();
+
+// Just delegating to Wolverine's local command bus for all
+app.MapPost("/start", async (StartOrder start, IMessageBus bus) => await bus.PublishAsync(start));
+app.MapPost("/complete", async (CompleteOrder start, IMessageBus bus) => await bus.PublishAsync(start));
+//app.MapGet("/all", (IQuerySession session) => session.Query<Order>().ToListAsync());
+app.MapGet("/", (HttpResponse response) =>
+{
+    response.Headers.Add("Location", "/swagger");
+    response.StatusCode = 301;
+}).ExcludeFromDescription();
+
+app.UseSwagger();
+app.UseSwaggerUI();
+
+return await app.RunOaktonCommands(args);
+
+#endregion
