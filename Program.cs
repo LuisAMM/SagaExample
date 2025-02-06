@@ -3,6 +3,7 @@
 using Marten;
 using Oakton;
 using Oakton.Resources;
+using SagaExample.Messages;
 using SagaExample.Sagas;
 using Wolverine;
 using Wolverine.Marten;
@@ -35,9 +36,9 @@ builder.Host.UseWolverine();
 var app = builder.Build();
 
 // Just delegating to Wolverine's local command bus for all
-app.MapPost("/start", async (StartOrder start, IMessageBus bus) => await bus.PublishAsync(start));
-app.MapPost("/complete", async (CompleteOrder start, IMessageBus bus) => await bus.PublishAsync(start));
-//app.MapGet("/all", (IQuerySession session) => session.Query<Order>().ToListAsync());
+app.MapPost("/start", (StartOrder start, IMessageBus bus) => bus.InvokeAsync(start));
+app.MapPost("/complete", (CompleteOrder complete, IMessageBus bus) => bus.PublishAsync(complete));
+app.MapGet("/all", (IQuerySession session) => session.Query<Order>().ToListAsync());
 app.MapGet("/", (HttpResponse response) =>
 {
     response.Headers.Add("Location", "/swagger");

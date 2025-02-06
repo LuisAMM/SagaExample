@@ -1,21 +1,10 @@
 using JasperFx.Core;
+using SagaExample.Messages;
 using Wolverine;
 
 namespace SagaExample.Sagas;
 
 #region sample_Order_saga
-
-public record StartOrder(string OrderId);
-
-public record CompleteOrder(string Id);
-
-#region sample_OrderTimeout
-
-// This message will always be scheduled to be delivered after
-// a one minute delay
-public record OrderTimeout(string Id) : TimeoutMessage(1.Minutes());
-
-#endregion
 
 public class Order : Saga
 {
