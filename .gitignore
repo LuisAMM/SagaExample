@@ -1,0 +1,68 @@
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Dd]ist/
+[Dd]istros/
+[Dd]ebug/
+[Dd]ebug/
+[Dd]ebug/
+
+# Uncomment if you have projects that need to exclude certain files
+# [Oo]ut/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# User-specific files
+.vs2017/
+.vs2019/
+.vs/
+.idea/
+.vscode/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
+
+# Windows Installer Database
+*.pdb
+
+# Windows Installer logs
+*.log
+
+# Windows Installer build files
+*.wixproj
+
+# Windows 10 SDK
+AppPackages/
+AppxPackages/
+UapAppX/
+
+# Windows Store app packages
+Packages/
+Publish/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# .NET Core SDK files
+.nuget/
+
+# User-specific NuGet files
+.nuget/packages/
+
+# Windows Installer files
+*.cab
+*.msi
+*.msm
+*.msp
